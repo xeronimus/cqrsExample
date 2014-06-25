@@ -6,7 +6,7 @@ angular.module('cqrsExampleApp')
       return 'http://localhost:9999/' + dataId + '.json';
     });
 
-    // tell angular.CQRS how to denormalize (or merge) profileChanged events on the resource myProfile
+    // tell angular.CQRS how to denormalize (or merge) profileChanged events on the modelView personDetailView
     CQRSProvider.registerDenormalizerFunctions('personDetailView', 'moved', function (personDetailView, change) {
       personDetailView.address = change.address;
       return personDetailView;

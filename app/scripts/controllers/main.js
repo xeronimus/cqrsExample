@@ -9,7 +9,7 @@ angular.module('cqrsExampleApp')
         $scope.personDetails = personDetails;
       });
 
-      WrapperService.getWrapped('myProfile').then(function (data) {
+      WrapperService.getWrapped('personDetailView').then(function (data) {
 //         console.log('callback from wrapperService', data);
       });
 
@@ -19,13 +19,9 @@ angular.module('cqrsExampleApp')
       });
 
       $scope.onChangeProfile = function () {
-        CQRS.sendCommand({
-          aggregate: 'person',
-          commandName: 'move',
-          payload: {
+        CQRS.sendCommand('person', 'move', {
             id: $scope.personDetails.id,
             address: 'my entered new address'
-          }
         });
       };
 
