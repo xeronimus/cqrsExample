@@ -22,7 +22,7 @@ angular
             redirectTo: '/'
          });
    })
-   .run(function (CQRS, StoreService) {
+   .run(function (CQRS, DenormalizationService) {
       // connect angular.CQRS to your socket / long polling solution, etc.
       var mySocket = io('http://localhost:9999');
 
@@ -37,7 +37,7 @@ angular
       });
 
     // tell angular.CQRS how to denormalize (or merge) profileChanged events on the modelView personDetailView
-    StoreService.registerDenormalizerFunction('profile', 'person', 'moved', function (oldProfile, payload) {
+    DenormalizationService.registerDenormalizerFunction('profile', 'person', 'moved', function (oldProfile, payload) {
       if(payload.id === oldProfile.person.id){
         oldProfile.person.address = payload.address;
       }
@@ -45,7 +45,7 @@ angular
       return oldProfile;
     });
 
-    StoreService.registerDenormalizerFunction('profile', 'employer', 'hired', function (oldEmployer, newEmployee) {
+    DenormalizationService.registerDenormalizerFunction('profile', 'employer', 'hired', function (oldEmployer, newEmployee) {
       oldEmployer.employees.push(newEmployee);
       return oldEmployer;
     });
