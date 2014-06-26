@@ -1,22 +1,22 @@
 'use strict';
 
 angular.module('cqrsExampleApp')
-   .service('WrapperService', function (Store, $q) {
+  .service('WrapperService', function (StoreService, $q) {
 
-      var container = {};
+    var container = {};
 
-      function getWrapped(dataId) {
-         var deferred = $q.defer();
-         Store.get(dataId, function (result) {
+    function getWrapped(modelView, parameters) {
+      var deferred = $q.defer();
+      StoreService.for(modelView, parameters).do(function (result) {
 //            console.log('callback in wrapper', result);
-            container[dataId] = result;
-            deferred.resolve(result);
-         });
-         return deferred.promise;
-      }
+        container[modelView] = result;
+        deferred.resolve(result);
+      });
+      return deferred.promise;
+    }
 
-      return {
-         getWrapped: getWrapped
-      };
+    return {
+      getWrapped: getWrapped
+    };
 
-   });
+  });
