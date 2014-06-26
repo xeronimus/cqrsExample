@@ -8,7 +8,7 @@ angular
       'ngRoute',
       'ngCQRS'
    ])
-   .config(function ($routeProvider, CQRSProvider) {
+   .config(function ($routeProvider) {
       $routeProvider
          .when('/', {
             templateUrl: 'views/main.html',
@@ -22,7 +22,7 @@ angular
             redirectTo: '/'
          });
    })
-   .run(function (CQRS) {
+   .run(function (CQRS, StoreService) {
       // connect angular.CQRS to your socket / long polling solution, etc.
       var mySocket = io('http://localhost:9999');
 
@@ -35,4 +35,10 @@ angular
       CQRS.onCommand(function (data) {
          mySocket.emit('commands', data);
       });
+
+    // tell angular.CQRS how to denormalize (or merge) profileChanged events on the modelView personDetailView
+    StoreService.registerDenormalizerFunction('personDetailView', 'moved', function (personDetailView, change) {
+      personDetailView.address = change.address;
+      return personDetailView;
+    });
    });
