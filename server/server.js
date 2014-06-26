@@ -25,10 +25,11 @@ io.on('connection', function (socket) {
   });
 
   socket.on('commands', function (command) {
+    console.log('got command', command);
     socket.emit('events', {
-      viewModel: 'personDetailView',
-      eventName: 'moved',
-      payload: command.payload
+      aggregateType: 'person',
+      name: 'moved',
+      payload: {id:1,address: command.payload.address}
     });
   });
 
@@ -39,8 +40,8 @@ var i = 0;
 setInterval(function () {
   i++;
   io.emit('events', {
-    viewModel: 'personDetailView',
-    eventName: 'moved',
+    aggregateType: 'person',
+    name: 'moved',
     payload: {
       id: 1,
       address: 'myStreet' + i

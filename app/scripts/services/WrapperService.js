@@ -3,12 +3,12 @@
 angular.module('cqrsExampleApp')
   .service('WrapperService', function (StoreService, $q) {
 
-    var container = {};
+    var container = {},
+      store = StoreService.createForService();
 
     function getWrapped(modelView, parameters) {
       var deferred = $q.defer();
-      StoreService.for(modelView, parameters).do(function (result) {
-//            console.log('callback in wrapper', result);
+      store.for(modelView, parameters).do(function (result) {
         container[modelView] = result;
         deferred.resolve(result);
       });
